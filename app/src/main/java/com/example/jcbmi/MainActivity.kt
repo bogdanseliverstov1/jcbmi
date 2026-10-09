@@ -14,6 +14,12 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.jcbmi.ui.theme.JcbmiTheme
@@ -24,8 +30,10 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             JcbmiTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    BMIscreen()
+                Scaffold { innerPadding ->
+                    Column(Modifier.padding(innerPadding)) {
+                        BMIscreen()
+                    }
                 }
             }
         }
@@ -42,10 +50,10 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 
 @Composable
 fun BMIscreen(){
-    var name: String
-    var weight: Int = 80
-    var height: Int = 180
-    var bmi: Float = 0f
+    var name: String by remember { mutableStateOf("Name") }
+    var weight: Int by remember { mutableIntStateOf(80) }
+    var height: Int by remember { mutableIntStateOf(180) }
+    var bmi: Float by remember { mutableFloatStateOf(0f) }
     Column(){
         Text(text = "BMI Calculator")
         TextField(
@@ -74,17 +82,11 @@ fun BMIscreen(){
         }) {
             Text(text = "Calculate BMI")
         }
+        bmi = 10000 * (weight.toFloat()/(height * height))
         if (bmi != 0f){
             Text(text = "Your bmi is: $bmi")
         }
-
-
-
-
     }
-
-
-
 }
 
 @Preview(showBackground = true)
